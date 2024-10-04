@@ -103,6 +103,12 @@ public class BoidManager : MonoBehaviour
         SpawnBoids();
     }
 
+    public void ResetBoids()
+    {
+        DespawnBoids();
+        SpawnBoids();
+    }
+
     public void ToggleGizmo()
     {
         showGizmo = !showGizmo;
