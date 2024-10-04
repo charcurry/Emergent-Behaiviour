@@ -115,12 +115,15 @@ public class Boid : MonoBehaviour
         velocity = newVelocity;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(transform.position, neighborDistance);  // Neighbor detection radius
+    void OnDrawGizmos()
+    {
+        if (boidManager.showGizmo)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, neighborDistance);  // Neighbor detection radius
 
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, avoidanceDistance);  // Avoidance distance
-    //}
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, avoidanceDistance);  // Avoidance distance
+        }
+    }
 }

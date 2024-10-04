@@ -22,22 +22,31 @@ public class BoidManager : MonoBehaviour
     public Slider forceSlider;
     public Slider countSlider;
 
+    public bool trails;
+
+    public bool showGizmo = false;
+
     public List<Boid> boids = new List<Boid>();  // List of all boids
 
     void Start()
     {
         SpawnBoids();
+        trails = true;
     }
 
     void SpawnBoids()
     {
         for (int i = 0; i < boidCount; i++)
         {
-            // Random position and rotation for each boid
             Vector2 spawnPosition = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
-            //Quaternion spawnRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
             Boid newBoid = Instantiate(boidPrefab, spawnPosition, Quaternion.identity);
             boids.Add(newBoid);
+
+            TrailRenderer trail = newBoid.GetComponentInChildren<TrailRenderer>();
+            if (trail != null)
+            {
+                trail.enabled = trails;
+            }
         }
     }
 
@@ -48,6 +57,20 @@ public class BoidManager : MonoBehaviour
             Destroy(boid.gameObject);
         }
         boids.Clear();
+    }
+
+    public void ToggleTrails()
+    {
+        trails = !trails;
+
+        foreach (Boid boid in boids)
+        {
+            TrailRenderer trail = boid.GetComponentInChildren<TrailRenderer>();
+            if (trail != null)
+            {
+                trail.enabled = trails;
+            }
+        }
     }
 
     public void SpeedSlider()
@@ -78,5 +101,10 @@ public class BoidManager : MonoBehaviour
         boidCount = (int)countSlider.value;
         DespawnBoids();
         SpawnBoids();
+    }
+
+    public void ToggleGizmo()
+    {
+        showGizmo = !showGizmo;
     }
 }
