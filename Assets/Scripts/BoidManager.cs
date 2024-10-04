@@ -14,7 +14,8 @@ public class BoidManager : MonoBehaviour
     public float neighborDistance = 3.0f;  // Distance to consider other boids as neighbors
     public float avoidanceDistance = 1.0f;  // Minimum distance to avoid other boids
     public float maxForce = 0.5f;  // Maximum steering force
-
+    
+    // Sliders to change the parameters during the simulation
     public Slider speedSlider;
     public Slider rotationSlider;
     public Slider neighborSlider;
@@ -22,9 +23,9 @@ public class BoidManager : MonoBehaviour
     public Slider forceSlider;
     public Slider countSlider;
 
-    public bool trails;
+    public bool trails;  // Toggle trails on/off
 
-    public bool showGizmo = false;
+    public bool showGizmo = false; // Toggle the visibility of the gizmo
 
     public List<Boid> boids = new List<Boid>();  // List of all boids
 
@@ -34,14 +35,18 @@ public class BoidManager : MonoBehaviour
         trails = true;
     }
 
+    // Spawn boids at the start of the simulation
     void SpawnBoids()
     {
+        // Spawn boids in a circle around the manager
         for (int i = 0; i < boidCount; i++)
         {
+            // Random position within the spawn radius
             Vector2 spawnPosition = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
             Boid newBoid = Instantiate(boidPrefab, spawnPosition, Quaternion.identity);
             boids.Add(newBoid);
 
+            // Set the parameters for the boid trail
             TrailRenderer trail = newBoid.GetComponentInChildren<TrailRenderer>();
             if (trail != null)
             {
@@ -50,6 +55,7 @@ public class BoidManager : MonoBehaviour
         }
     }
 
+    // Despawn all boids
     void DespawnBoids()
     {
         foreach (Boid boid in boids)
@@ -59,12 +65,14 @@ public class BoidManager : MonoBehaviour
         boids.Clear();
     }
 
+    // Toggle trails on/off
     public void ToggleTrails()
     {
         trails = !trails;
 
         foreach (Boid boid in boids)
         {
+            // Enable/disable the trail renderer
             TrailRenderer trail = boid.GetComponentInChildren<TrailRenderer>();
             if (trail != null)
             {
@@ -73,6 +81,7 @@ public class BoidManager : MonoBehaviour
         }
     }
 
+    //Slider functions to change the parameters
     public void SpeedSlider()
     {
         speed = speedSlider.value * 10;
@@ -103,12 +112,14 @@ public class BoidManager : MonoBehaviour
         SpawnBoids();
     }
 
+    // Reset the boids by despawning and respawning them
     public void ResetBoids()
     {
         DespawnBoids();
         SpawnBoids();
     }
-
+    
+    // Toggle the visibility of the gizmo
     public void ToggleGizmo()
     {
         showGizmo = !showGizmo;
